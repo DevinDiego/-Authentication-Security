@@ -7,8 +7,6 @@ const md5 = require("md5");
 
 const app = express();
 
-console.log(process.env.API_KEY);
-
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -32,11 +30,18 @@ const userSchema = new mongoose.Schema({
 });
 
 /**** ENCRYPTION BEFORE MODEL *****************/
+<<<<<<< HEAD
 
 // userSchema.plugin(encrypt, {
 //   secret: process.env.SECRET,
 //   encryptedFields: ["password"],
 // });
+=======
+userSchema.plugin(encrypt, {
+  secret: process.env.SECRET,
+  encryptedFields: ["password"],
+});
+>>>>>>> bcb835bbf23ab2f0ded023b66f1e5cc95dbf7f0a
 
 const User = mongoose.model("User", userSchema);
 
