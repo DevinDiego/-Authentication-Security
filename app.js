@@ -2,7 +2,9 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const md5 = require("md5");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+//const md5 = require("md5");
 //const encrypt = require("mongoose-encryption");
 
 const app = express();
@@ -30,18 +32,11 @@ const userSchema = new mongoose.Schema({
 });
 
 /**** ENCRYPTION BEFORE MODEL *****************/
-<<<<<<< HEAD
 
 // userSchema.plugin(encrypt, {
 //   secret: process.env.SECRET,
 //   encryptedFields: ["password"],
 // });
-=======
-userSchema.plugin(encrypt, {
-  secret: process.env.SECRET,
-  encryptedFields: ["password"],
-});
->>>>>>> bcb835bbf23ab2f0ded023b66f1e5cc95dbf7f0a
 
 const User = mongoose.model("User", userSchema);
 
@@ -73,36 +68,40 @@ app.get("/register", (req, res) => {
 
 /********* POST REGISTRATION ***********/
 app.post("/register", (req, res) => {
-  const newUser = new User({
-    email: req.body.username,
-    password: md5(req.body.password),
-  });
-  newUser
-    .save()
-    .then((result) => {
-      res.render("secrets", {
-        title: "Secrets",
-      });
-    })
-    .catch((err) => {
-      console.log(err);
+  bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+    const newUser = new User({
+      email: req.body.username,
+      password: hash,
     });
+    newUser
+      .save()
+      .then((result) => {
+        res.render("secrets", {
+          title: "Secrets",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 });
 
 /********* POST LOG IN ***********/
 app.post("/login", (req, res) => {
   const username = req.body.username;
-  const password = md5(req.body.password);
+  const password = req.body.password;
 
   User.findOne({
     email: username,
   })
-    .then((result) => {
-      if (result && result.password === password) {
-        res.render("secrets", {
-          title: "Secrets",
-        });
-      }
+    .then((foundUser) => {
+      bcrypt.compare(password, foundUser.password, (err, result) => {
+        if (result === true) {
+          res.render("secrets", {
+            title: "Secrets",
+          });
+        }
+      });
     })
     .catch((err) => {
       console.log(err);
