@@ -1,4 +1,4 @@
-# Learn the different levels of Encryption.
+#  Authentication & Security
 Utilizing different levels of encryption.
 Which one is the most secure?
 
@@ -6,4 +6,4 @@ Which one is the most secure?
 ### Level 2: md5
 ### Level 3: bcrypt 10 salts
 ### Passport automatic salt and hash
-#### Learning about cookies and sessions
+#### Learning about cookies and sessions using Passport
