@@ -1,9 +1,6 @@
-#  Authentication & Security
-Utilizing different levels of encryption.
-Which one is the most secure?
+#  Authentication & Security Tutorial
+#### Users can register, login, and submit a secret.
+#### Their identity is hidden from other users.
+#### Password is encrypted using passport. Or users can choose to login with Google.
 
-### Level 1: mongoose.encryption
-### Level 2: md5
-### Level 3: bcrypt 10 salts
-### Passport automatic salt and hash
-#### Learning about cookies and sessions using Passport
+
